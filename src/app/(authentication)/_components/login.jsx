@@ -1,15 +1,15 @@
 "use client";
+import { signInAction } from "@/action/signInAction";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { KeyRound, Mail } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import loginActions from "./../../../actions/login-actions";
 
 export default function LoginComponent() {
   return (
-    <form action={loginActions} className="space-y-6 bg-white">
+    <form action={signInAction} className="space-y-6 bg-white">
       {/* email */}
       <div>
         <Label
@@ -21,8 +21,10 @@ export default function LoginComponent() {
 
         <Input
           type="text"
+          id="email"
+          name="email" // ✅ Added name attribute
           placeholder="Please type your email"
-          className={`bg-ghost-white py-2.5 px-4 rounded-lg w-full text-light-steel-blue/90`}
+          className="bg-ghost-white py-2.5 px-4 rounded-lg w-full text-light-steel-blue/90"
         />
       </div>
 
@@ -37,8 +39,10 @@ export default function LoginComponent() {
 
         <Input
           type="password"
+          id="password"
+          name="password" // ✅ Added name attribute
           placeholder="Please type your password"
-          className={`bg-ghost-white py-2.5 px-4 rounded-lg w-full text-light-steel-blue/90`}
+          className="bg-ghost-white py-2.5 px-4 rounded-lg w-full text-light-steel-blue/90"
         />
       </div>
 
@@ -54,7 +58,7 @@ export default function LoginComponent() {
       <div>
         <div className="border-b border-b-light-steel-blue"></div>
         <div className="capitalize text-right mt-2 font-normal">
-          create new accont?{" "}
+          create new account?{" "}
           <Link
             href={"/register"}
             className="hover:text-persian-green hover:underline"
@@ -67,7 +71,7 @@ export default function LoginComponent() {
       {/* sign in with google */}
       <div className=" bg-ghost-white rounded-lg text-center">
         <Button className="flex gap-2 items-start justify-center w-full bg-ghost-white text-charcoal shadow-none hover:bg-ghost-white/50">
-          <img src="/Google Icon.svg" alt="google icon" /> Login with google
+          <img src="/Google Icon.svg" alt="google icon" /> Login with Google
         </Button>
       </div>
     </form>

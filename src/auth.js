@@ -1,5 +1,8 @@
+// src/auth.j
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { signInService } from "./services/siginService";
+// import { loginService } from "./services/loginService";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -11,23 +14,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
 
       authorize: async (credentials) => {
-        const { email, password } = credentials;
-
         try {
-          const res = await fetch("http://localhost:3000/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-          });
-
-          if (!res.ok) {
+          const user = await signInService(credentials);
+          if (!user) {
             throw new Error("Invalid credentials");
           }
+          console.log("user: ", user);
 
-          const user = await res.json();
           return user;
         } catch (error) {
-          throw new Error(error.message);
+          console.error("Authorize error:", error);
+          return null;
         }
       },
     }),
@@ -46,10 +43,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (user) {
         token.user = user;
       }
-      return token;
+
+      return token; // Ensure token is always returned
     },
     session: async ({ session, token }) => {
-      if (token?.user) {
+      if (token && token.user) {
         session.user = token.user;
       }
       return session;
