@@ -1,4 +1,5 @@
-import "../globals.css";
+// import "@/style/.globals.css";
+import "../../../style/globals.css";
 import Logo from "@/components/logo";
 
 export const metadata = {
