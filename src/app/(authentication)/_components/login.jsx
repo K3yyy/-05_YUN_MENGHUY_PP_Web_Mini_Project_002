@@ -5,11 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { KeyRound, Mail } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useActionState } from "react";
 
 export default function LoginComponent() {
+  const [state, formAction, isPending] = useActionState(signInAction, null);
+
+  console.log("state ", state);
+
   return (
-    <form action={signInAction} className="space-y-6 bg-white">
+    <form action={formAction} className="space-y-6 bg-white">
       {/* email */}
       <div>
         <Label
@@ -51,7 +55,7 @@ export default function LoginComponent() {
         type="submit"
         className="text-base cursor-pointer bg-persian-green text-white py-2.5 rounded-lg w-full font-bold"
       >
-        Login
+        {isPending ? "Loadind..." : "Login"}
       </Button>
 
       {/* underline */}

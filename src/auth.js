@@ -2,7 +2,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { signInService } from "./services/siginService";
-// import { loginService } from "./services/loginService";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -44,12 +43,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.user = user;
       }
 
-      return token; // Ensure token is always returned
+      return token;
     },
     session: async ({ session, token }) => {
       if (token && token.user) {
         session.user = token.user;
       }
+      console.log("token: ", token);
+      console.log("Session token: ", session);
       return session;
     },
   },

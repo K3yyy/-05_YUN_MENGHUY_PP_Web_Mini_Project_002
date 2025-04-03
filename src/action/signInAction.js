@@ -2,11 +2,17 @@
 
 import { signIn } from "@/auth";
 
-export const signInAction = async (formData) => {
-  console.log("form data", formData);
+export const signInAction = async (_, formData) => {
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  if (!password) {
+    return { error: "Password is required" };
+  }
+
   await signIn("credentials", {
-    email: formData.get("email"),
-    password: formData.get("password"),
-    redirectTo: "/dashboard",
+    email,
+    password,
+    redirectTo: "/dashboards",
   });
 };

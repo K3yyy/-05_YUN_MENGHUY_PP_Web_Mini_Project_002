@@ -11,9 +11,6 @@ export default function RegisterPage() {
         <RegisterComponent />
 
         {/* copyright */}
-        <p className="text-center text-light-steel-blue">
-          &copy; Copyright | 2025 Monster
-        </p>
       </div>
     </main>
   );
