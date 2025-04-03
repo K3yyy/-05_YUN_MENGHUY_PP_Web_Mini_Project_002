@@ -1,25 +1,39 @@
 export const registerService = async (user) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_AUTH_BASE_URL}/v1/auth/register`,
+      `http://96.9.81.187:8080/api/v1/auth/register`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
       }
     );
 
+    // Attempt to parse response JSON
+    const responseData = await response.json().catch(() => null);
+    console.log("Signup Response:", response.status, responseData);
+
     if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(`HTTP ${response.status}: ${errorMessage}`);
+      const errorMessage =
+        responseData?.message || `Registration failed: ${response.status}`;
+
+      // Handle case where email already exists
+      if (response.status === 409) {
+        return {
+          success: false,
+          message: "Email already exists. Please use a different email.",
+        };
+      }
+
+      return { success: false, message: errorMessage };
     }
 
-    const text = await response.text();
-    return text ? JSON.parse(text) : null;
+    return { success: true, data: responseData };
   } catch (error) {
-    console.error("Sign-up error:", error.message);
-    return { error: error.message };
+    console.error("SignUp Service Error:", error);
+    return {
+      success: false,
+      message: error.message || "Signup failed due to an unknown error",
+    };
   }
 };
